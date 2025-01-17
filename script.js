@@ -69,7 +69,7 @@ leftPanel.addEventListener('click', (e) => {
                 default:
                     break;
             }
-
+            input.focus();
             localStorage.clear();
 
             break

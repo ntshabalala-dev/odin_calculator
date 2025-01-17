@@ -17,6 +17,12 @@ button {
 
 .buttons {
     display: flex;
+    border: red solid 1px;
+}
+
+input {
+    width: 100%;
+    height: 3rem;
 }
 
 .left-panel ul{
@@ -38,14 +44,16 @@ li {
 .container {
     margin-top: 1rem;
     padding: 1rem;
-    background-color: red;
+    background-color: lightgrey;
     width: fit-content;
-    /* display: flex;
+    border-radius: 8px;
+    display: flex;
     flex-direction: column;
-    justify-content: center; */
+    gap: 1rem;
 }
 
 body {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
