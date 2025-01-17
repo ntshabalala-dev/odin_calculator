@@ -1,63 +1,83 @@
-// const plus = document.querySelector('#plus')
-// const clear = document.querySelector('#clear')
 const input = document.querySelector('input')
-
 const rightPanel = document.querySelector('.right-panel');
-const numbers = document.querySelector('.left-panel');
+const leftPanel = document.querySelector('.left-panel');
 const allRightPanelNodes = document.querySelectorAll('.right-panel button')
+let clearInputOnNumberPress = false;
 
-function disableRightPanelNOdes(Nodes) {
-    Nodes.forEach(Node => {
-        Node.toggleAttribute('disabled');
+function toggleRightPanelElements(Nodes) {
+    Nodes.forEach(Element => {
+        Element.toggleAttribute('disabled');
     });
+}
+
+function setOperandAndOperator(operand, operator) {
+    localStorage.setItem('a', operand);
+    localStorage.setItem('operator', operator);
 }
 
 rightPanel.addEventListener('click', function name(e) {
     if (input.value !== "") {
-        disableRightPanelNOdes(allRightPanelNodes);
-
-        switch (e.target.id) {
-            case 'add':
-                localStorage.setItem('a', input.value.toString());
-                localStorage.setItem('operator', 'plus');
-                input.value = '';
-                break;
-            case 'equals':
-                disableRightPanelNOdes();
-                const a = localStorage.getItem('a'); //
-                const operator = localStorage.getItem('operator'); //
-                const b = input.value;
-
-                console.log(a, b, operator);
-
-
-                switch (operator) {
-                    case 'plus':
-                        console.log(+a + +b);
-                        input.value = (+a + +b).toString();
-                        localStorage.clear();
-                        break;
-                    default:
-                        break;
-                }
-
-                break;
+        toggleRightPanelElements(allRightPanelNodes);
+        const operator = e.target.id
+        switch (operator) {
             case 'clear':
-                // console.log('wtf');
                 localStorage.clear();
                 input.value = '';
                 break;
             default:
+                setOperandAndOperator(input.value.toString(), operator)
+                input.value = '';
                 break;
         }
     }
-
 });
 
-numbers.addEventListener('click', (e) => {
+leftPanel.addEventListener('click', (e) => {
     const target = e.target;
-    if (target.id == 'number') {
-        input.value += target.innerText;
-        console.log(target.innerText);
+
+    switch (target.id) {
+        case 'number':
+            if (clearInputOnNumberPress) {
+                input.value = '';
+                clearInputOnNumberPress = false
+            }
+            input.value += target.innerText;
+            break;
+        case 'equals':
+            clearInputOnNumberPress = true
+            toggleRightPanelElements(allRightPanelNodes);
+            const a = localStorage.getItem('a'); //
+            const operator = localStorage.getItem('operator'); //
+            const b = input.value;
+
+            //console.log(a, b, operator);
+
+            switch (operator) {
+                case 'add':
+                    input.value = (+a + +b).toString();
+                    break;
+                case 'subtract':
+                    input.value = (+a - +b).toString();
+                    break;
+                case 'multiply':
+                    input.value = (+a * +b).toString();
+                    break;
+                case 'divide':
+                    input.value = (+a / +b).toString();
+
+                    break;
+                default:
+                    break;
+            }
+
+            localStorage.clear();
+
+            break
+        case 'clear':
+            input.value = '';
+            localStorage.clear();
+            break
+        default:
+            break;
     }
 })
