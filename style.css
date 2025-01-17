@@ -36,6 +36,7 @@ li {
 }
 
 .container {
+    margin-top: 1rem;
     padding: 1rem;
     background-color: red;
     width: fit-content;
