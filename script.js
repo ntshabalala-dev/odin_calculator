@@ -5,8 +5,8 @@ const allRightPanelNodes = document.querySelectorAll('.right-panel button')
 let clearInputOnNumberPress = false;
 
 function toggleRightPanelElements(Nodes) {
-    Nodes.forEach(Element => {
-        Element.toggleAttribute('disabled');
+    Nodes.forEach(node => {
+        node.toggleAttribute('disabled');
     });
 }
 
@@ -21,8 +21,10 @@ rightPanel.addEventListener('click', function name(e) {
         const operator = e.target.id
         switch (operator) {
             case 'clear':
-                localStorage.clear();
-                input.value = '';
+                // console.log('clear');
+                // localStorage.clear();
+                // input.value = '';
+                // toggleRightPanelElements(allRightPanelNodes);
                 break;
             default:
                 setOperandAndOperator(input.value.toString(), operator)
@@ -74,8 +76,13 @@ leftPanel.addEventListener('click', (e) => {
 
             break
         case 'clear':
-            input.value = '';
-            localStorage.clear();
+            // && const a = localStorage.getItem('a'); is null pr empty
+            if (input.value !== "") {
+                //toggleRightPanelElements(allRightPanelNodes);
+                input.value = '';
+                input.focus()
+                localStorage.clear();
+            }
             break
         default:
             break;
