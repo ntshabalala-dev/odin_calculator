@@ -17,12 +17,16 @@ button {
 
 .buttons {
     display: flex;
-    border: red solid 1px;
+    border: black solid 2px;
 }
 
 input {
     width: 100%;
     height: 3rem;
+    direction: rtl;
+    padding-top: 1.4rem;
+    padding-right: .2rem;
+    font-size: 1rem;
 }
 
 .left-panel ul{
@@ -41,10 +45,17 @@ li {
     flex-direction: column;
 }
 
+.right-panel button {
+    background-color: darkgray;
+}
+.left-panel button {
+    background-color: gray;
+}
+
 .container {
     margin-top: 1rem;
     padding: 1rem;
-    background-color: lightgrey;
+    background-color:cadetblue;
     width: fit-content;
     border-radius: 8px;
     display: flex;
@@ -56,4 +67,5 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* background-color: darkgrey; */
 }

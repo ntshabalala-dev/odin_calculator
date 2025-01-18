@@ -1,4 +1,9 @@
 const input = document.querySelector('input')
+var length = input.value.length; // Get length of current text
+console.log(length);
+
+input.setSelectionRange(0, 10); // Move cursor to end
+
 const rightPanel = document.querySelector('.right-panel');
 const leftPanel = document.querySelector('.left-panel');
 const allRightPanelNodes = document.querySelectorAll('.right-panel button')
@@ -17,7 +22,7 @@ function setOperandAndOperator(operand, operator) {
 
 rightPanel.addEventListener('click', function name(e) {
     if (input.value !== "") {
-        toggleRightPanelElements(allRightPanelNodes);
+        //toggleRightPanelElements(allRightPanelNodes);
         const operator = e.target.id
         switch (operator) {
             case 'clear':
