@@ -23,7 +23,7 @@ button {
 input {
     width: 100%;
     height: 3rem;
-    direction: rtl;
+    text-align: right;
     padding-top: 1.4rem;
     padding-right: .2rem;
     font-size: 1rem;
@@ -46,10 +46,10 @@ li {
 }
 
 .right-panel button {
-    background-color: darkgray;
+    background-color: darkgrey;
 }
 .left-panel button {
-    background-color: gray;
+    background-color: rgb(201, 187, 179);
 }
 
 .container {
@@ -67,5 +67,5 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* background-color: darkgrey; */
+    background-color: rgba(0, 0, 0, 0.773);
 }

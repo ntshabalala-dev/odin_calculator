@@ -1,13 +1,10 @@
-const input = document.querySelector('input')
-var length = input.value.length; // Get length of current text
-console.log(length);
-
-input.setSelectionRange(0, 10); // Move cursor to end
-
+const input = document.querySelector('input');
+input.focus()
 const rightPanel = document.querySelector('.right-panel');
 const leftPanel = document.querySelector('.left-panel');
 const allRightPanelNodes = document.querySelectorAll('.right-panel button')
 let clearInputOnNumberPress = false;
+
 
 function toggleRightPanelElements(Nodes) {
     Nodes.forEach(node => {
@@ -16,25 +13,26 @@ function toggleRightPanelElements(Nodes) {
 }
 
 function setOperandAndOperator(operand, operator) {
-    localStorage.setItem('a', operand);
-    localStorage.setItem('operator', operator);
+    if (!localStorage.getItem('a')) {
+        localStorage.setItem('a', operand);
+        localStorage.setItem('operator', operator);
+    } else {
+        const oldValue = localStorage.getItem('a')
+        localStorage.clear()
+        localStorage.setItem('a', oldValue);
+        localStorage.setItem('operator', operator);
+    }
 }
 
 rightPanel.addEventListener('click', function name(e) {
-    if (input.value !== "") {
-        //toggleRightPanelElements(allRightPanelNodes);
-        const operator = e.target.id
-        switch (operator) {
-            case 'clear':
-                // console.log('clear');
-                // localStorage.clear();
-                // input.value = '';
-                // toggleRightPanelElements(allRightPanelNodes);
-                break;
-            default:
-                setOperandAndOperator(input.value.toString(), operator)
-                input.value = '';
-                break;
+    const operator = e.target.id
+    if (operator == 'subtract' && input.value == "") {
+        input.value = '-'
+    } else {
+        const number = input.value.toString();
+        setOperandAndOperator(number, operator)
+        if (input.value !== "") {
+            input.value = '';
         }
     }
 });
@@ -45,37 +43,45 @@ leftPanel.addEventListener('click', (e) => {
     switch (target.id) {
         case 'number':
             if (clearInputOnNumberPress) {
+                console.log('fudge');
+
                 input.value = '';
                 clearInputOnNumberPress = false
             }
+            console.log(typeof input.value)
+            console.log(input.value + target.innerText);
+
             input.value += target.innerText;
             break;
         case 'equals':
             clearInputOnNumberPress = true
-            toggleRightPanelElements(allRightPanelNodes);
+            // toggleRightPanelElements(allRightPanelNodes);
             const a = localStorage.getItem('a'); //
             const operator = localStorage.getItem('operator'); //
             const b = input.value;
-
-            //console.log(a, b, operator);
+            let result = null
 
             switch (operator) {
                 case 'add':
-                    input.value = (+a + +b).toString();
+                    result = (+a + +b).toString();
                     break;
                 case 'subtract':
-                    input.value = (+a - +b).toString();
+                    result = (+a - +b).toString();
                     break;
                 case 'multiply':
-                    input.value = (+a * +b).toString();
+                    result = (+a * +b).toString();
                     break;
                 case 'divide':
-                    input.value = (+a / +b).toString();
-
+                    result = (+a / +b).toString();
                     break;
                 default:
                     break;
             }
+
+            console.log(result);
+
+
+            input.value = result;
             input.focus();
             localStorage.clear();
 
@@ -93,3 +99,9 @@ leftPanel.addEventListener('click', (e) => {
             break;
     }
 })
+
+
+window.addEventListener('unload', function () {
+    // Clear local storage when the page is closed or refreshed
+    localStorage.clear();
+});
