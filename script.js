@@ -43,18 +43,28 @@ leftPanel.addEventListener('click', (e) => {
 
     switch (target.id) {
         case 'number':
-            // -6 & clearInputOnNumberPress = true
-
             if (clearInputOnNumberPress) {
                 input.value = '';
                 clearInputOnNumberPress = false
             }
             const v = input.value + target.innerText;
             input.value = v;
+
+            if (target.innerText == '.') {
+                console.log('disabled');
+                target.disabled = true;
+            }
+
             break;
         case 'equals':
-            clearInputOnNumberPress = true
-            // toggleRightPanelElements(allRightPanelNodes);
+            if (input.value == '' || !localStorage.getItem('a')) {
+                return;
+            }
+
+            clearInputOnNumberPress = true;
+            let decimal = document.querySelector('.fourth-row #number');
+            decimal.disabled = false;
+
             const a = localStorage.getItem('a'); //
             const operator = localStorage.getItem('operator'); //
             const b = input.value;
