@@ -15,14 +15,30 @@ button {
    height: 100%;
 }
 
+.top-panel button {
+    
+   background-color: darkgrey;
+}
+
 .buttons {
     display: flex;
+    flex-direction: column;
+    
+}
+
+.lower-panel {
     border: black solid 2px;
+    display: flex;
+}
+
+.top-panel > ul {
+    display: flex;
+    justify-content: flex-end;
 }
 
 input {
     width: 100%;
-    height: 3rem;
+    height: 3.5rem;
     text-align: right;
     padding-top: 1.4rem;
     padding-right: .2rem;
@@ -60,7 +76,7 @@ li {
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: .2rem;
 }
 
 body {

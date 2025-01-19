@@ -28,6 +28,7 @@ rightPanel.addEventListener('click', function name(e) {
     const operator = e.target.id
     if (operator == 'subtract' && input.value == "") {
         input.value = '-'
+        clearInputOnNumberPress = false
     } else {
         const number = input.value.toString();
         setOperandAndOperator(number, operator)
@@ -42,16 +43,14 @@ leftPanel.addEventListener('click', (e) => {
 
     switch (target.id) {
         case 'number':
-            if (clearInputOnNumberPress) {
-                console.log('fudge');
+            // -6 & clearInputOnNumberPress = true
 
+            if (clearInputOnNumberPress) {
                 input.value = '';
                 clearInputOnNumberPress = false
             }
-            console.log(typeof input.value)
-            console.log(input.value + target.innerText);
-
-            input.value += target.innerText;
+            const v = input.value + target.innerText;
+            input.value = v;
             break;
         case 'equals':
             clearInputOnNumberPress = true
@@ -87,7 +86,6 @@ leftPanel.addEventListener('click', (e) => {
 
             break
         case 'clear':
-            // && const a = localStorage.getItem('a'); is null pr empty
             if (input.value !== "") {
                 //toggleRightPanelElements(allRightPanelNodes);
                 input.value = '';
