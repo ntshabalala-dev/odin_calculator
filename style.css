@@ -85,3 +85,10 @@ body {
     align-items: center;
     background-color: rgba(0, 0, 0, 0.773);
 }
+
+.selected {
+    border: 2px solid orangered;
+    border-radius: 8px;
+    box-shadow: 2px 2px 3px orangered;
+    /* padding: 5px; */
+}

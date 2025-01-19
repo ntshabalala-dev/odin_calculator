@@ -2,6 +2,7 @@ const input = document.querySelector('input');
 input.focus()
 const rightPanel = document.querySelector('.right-panel');
 const leftPanel = document.querySelector('.left-panel');
+const topPanel = document.querySelector('.top-panel');
 const allRightPanelNodes = document.querySelectorAll('.right-panel button')
 let clearInputOnNumberPress = false;
 
@@ -11,6 +12,32 @@ function toggleRightPanelElements(Nodes) {
         node.toggleAttribute('disabled');
     });
 }
+
+topPanel.addEventListener('click', (e) => {
+    const target = e.target;
+    let inputValue = input.value;
+    //console.log(inputValue);
+
+    switch (target.id) {
+        case 'clear':
+            if (inputValue !== "") {
+                //toggleRightPanelElements(allRightPanelNodes);
+                input.value = '';
+                input.focus()
+                localStorage.clear();
+            }
+            break
+        case "backspace":
+            if (inputValue !== "") {
+                //toggleRightPanelElements(allRightPanelNodes);
+                // const digits = inputValue;
+                input.value = inputValue.slice(0, inputValue.length - 1);
+            }
+            break;
+        default:
+            break;
+    }
+})
 
 function setOperandAndOperator(operand, operator) {
     if (!localStorage.getItem('a')) {
@@ -94,14 +121,6 @@ leftPanel.addEventListener('click', (e) => {
             input.focus();
             localStorage.clear();
 
-            break
-        case 'clear':
-            if (input.value !== "") {
-                //toggleRightPanelElements(allRightPanelNodes);
-                input.value = '';
-                input.focus()
-                localStorage.clear();
-            }
             break
         default:
             break;
