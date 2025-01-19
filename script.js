@@ -60,7 +60,7 @@ rightPanel.addEventListener('click', function name(e) {
         const number = input.value.toString();
         setOperandAndOperator(number, operator)
         if (input.value !== "") {
-            input.value = '';
+            //input.value = '';
         }
     }
 });
@@ -74,8 +74,16 @@ leftPanel.addEventListener('click', (e) => {
                 input.value = '';
                 clearInputOnNumberPress = false
             }
-            const v = input.value + target.innerText;
-            input.value = v;
+
+            //const v2 = input.value;
+            if (localStorage.getItem('a')) {
+                input.value = '';
+                const v = input.value + target.innerText;
+                input.value = v
+            } else {
+                input.value = input.value + target.innerText;
+            }
+
 
             if (target.innerText == '.') {
                 console.log('disabled');
