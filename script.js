@@ -5,6 +5,8 @@ const leftPanel = document.querySelector('.left-panel');
 const topPanel = document.querySelector('.top-panel');
 const allRightPanelNodes = document.querySelectorAll('.right-panel button')
 let clearInputOnNumberPress = false;
+let appendNumbers = false;
+let isCalculationDone = false;
 
 
 function toggleRightPanelElements(Nodes) {
@@ -25,6 +27,7 @@ topPanel.addEventListener('click', (e) => {
                 input.value = '';
                 input.focus()
                 localStorage.clear();
+                appendNumbers = false;
             }
             break
         case "backspace":
@@ -53,9 +56,19 @@ function setOperandAndOperator(operand, operator) {
 
 rightPanel.addEventListener('click', function name(e) {
     const operator = e.target.id
-    if (operator == 'subtract' && input.value == "") {
+
+    if (operator == 'subtract' && (
+        localStorage.getItem('operator') == 'subtract' ||
+        (!localStorage.getItem('a') && input.value == '') ||
+        localStorage.getItem('operator') ||
+        (isCalculationDone && localStorage.getItem('a'))
+    )
+    ) {
         input.value = '-'
-        clearInputOnNumberPress = false
+        clearInputOnNumberPress = false;
+        appendNumbers = localStorage.getItem('operator') ? true : false;
+
+
     } else {
         const number = input.value.toString();
         setOperandAndOperator(number, operator)
@@ -75,18 +88,19 @@ leftPanel.addEventListener('click', (e) => {
                 clearInputOnNumberPress = false
             }
 
-            //const v2 = input.value;
             if (localStorage.getItem('a')) {
-                input.value = '';
-                const v = input.value + target.innerText;
-                input.value = v
+                if (!appendNumbers) {
+                    input.value = '';
+
+                }
+                input.value += target.innerText
+                appendNumbers = true
             } else {
-                input.value = input.value + target.innerText;
+                input.value += target.innerText;
+                isCalculationDone = false
             }
 
-
             if (target.innerText == '.') {
-                console.log('disabled');
                 target.disabled = true;
             }
 
@@ -95,8 +109,10 @@ leftPanel.addEventListener('click', (e) => {
             if (input.value == '' || !localStorage.getItem('a')) {
                 return;
             }
-
+            appendNumbers = false;
             clearInputOnNumberPress = true;
+            isCalculationDone = true;
+
             let decimal = document.querySelector('.fourth-row #number');
             decimal.disabled = false;
 
