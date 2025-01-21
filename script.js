@@ -116,8 +116,8 @@ leftPanel.addEventListener('click', (e) => {
             let decimal = document.querySelector('.fourth-row #number');
             decimal.disabled = false;
 
-            const a = localStorage.getItem('a'); //
-            const operator = localStorage.getItem('operator'); //
+            const a = localStorage.getItem('a');
+            const operator = localStorage.getItem('operator');
             const b = input.value;
             let result = null
 
@@ -138,13 +138,9 @@ leftPanel.addEventListener('click', (e) => {
                     break;
             }
 
-            console.log(result);
-
-
             input.value = result;
             input.focus();
             localStorage.clear();
-
             break
         default:
             break;
