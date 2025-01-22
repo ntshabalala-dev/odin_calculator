@@ -4,3 +4,7 @@
 2. Refactor code
 3. Add factorial function
 4. Add percentage fuctionality
+5. Create and add logo to empty space
+6. Hover over buttons changes colour
+7. Update screen for calculations. Show expression at the top left 
+   and the equals sign at the bottom left.

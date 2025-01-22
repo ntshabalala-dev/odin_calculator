@@ -8,22 +8,20 @@ let clearInputOnNumberPress = false;
 let appendNumbers = false;
 let isCalculationDone = false;
 
-
-function toggleRightPanelElements(Nodes) {
-    Nodes.forEach(node => {
-        node.toggleAttribute('disabled');
-    });
-}
-
 topPanel.addEventListener('click', (e) => {
     const target = e.target;
     let inputValue = input.value;
-    //console.log(inputValue);
+    const operatorElement = document.getElementById(localStorage.getItem('operator'));
 
     switch (target.id) {
         case 'clear':
+            if (operatorElement) {
+                if (operatorElement.classList.contains('selected')) {
+                    operatorElement.classList.toggle('selected');
+                }
+            }
+
             if (inputValue !== "") {
-                //toggleRightPanelElements(allRightPanelNodes);
                 input.value = '';
                 input.focus()
                 localStorage.clear();
@@ -32,9 +30,15 @@ topPanel.addEventListener('click', (e) => {
             break
         case "backspace":
             if (inputValue !== "") {
-                //toggleRightPanelElements(allRightPanelNodes);
-                // const digits = inputValue;
-                input.value = inputValue.slice(0, inputValue.length - 1);
+                if (operatorElement && operatorElement.classList.contains('selected')) {
+                    operatorElement.classList.toggle('selected');
+                    localStorage.removeItem('operator')
+                } else {
+                    input.value = inputValue.slice(0, inputValue.length - 1);
+                    if (input.value == '') {
+                        localStorage.clear()
+                    }
+                }
             }
             break;
         default:
@@ -67,14 +71,27 @@ rightPanel.addEventListener('click', function name(e) {
         input.value = '-'
         clearInputOnNumberPress = false;
         appendNumbers = localStorage.getItem('operator') ? true : false;
-
-
-    } else {
-        const number = input.value.toString();
-        setOperandAndOperator(number, operator)
-        if (input.value !== "") {
-            //input.value = '';
+        const operatorElement = document.getElementById(operator);
+        if (operatorElement.classList.contains('selected')) {
+            operatorElement.classList.toggle('selected');
         }
+    } else {
+        const iV = input.value
+
+        console.log(Number.isInteger(+iV));
+
+        if (iV == "" || !Number.isInteger(+iV)) {
+            return;
+        }
+
+        const operatorElement = document.getElementById(localStorage.getItem('operator'));
+        if (operatorElement && operatorElement.classList.contains('selected')) {
+            operatorElement.classList.toggle('selected');
+            localStorage.removeItem('operator')
+        }
+
+        document.getElementById(operator).classList.toggle('selected');
+        setOperandAndOperator(iV, operator)
     }
 });
 
@@ -91,7 +108,6 @@ leftPanel.addEventListener('click', (e) => {
             if (localStorage.getItem('a')) {
                 if (!appendNumbers) {
                     input.value = '';
-
                 }
                 input.value += target.innerText
                 appendNumbers = true
@@ -113,13 +129,16 @@ leftPanel.addEventListener('click', (e) => {
             clearInputOnNumberPress = true;
             isCalculationDone = true;
 
-            let decimal = document.querySelector('.fourth-row #number');
-            decimal.disabled = false;
+            document.querySelector('.fourth-row #number').disabled = false;
 
             const a = localStorage.getItem('a');
             const operator = localStorage.getItem('operator');
             const b = input.value;
             let result = null
+            const operatorElement = document.getElementById(operator);
+            if (operatorElement.classList.contains('selected')) {
+                operatorElement.classList.toggle('selected');
+            }
 
             switch (operator) {
                 case 'add':
