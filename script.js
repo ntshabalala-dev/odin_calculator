@@ -93,7 +93,6 @@ rightPanel.addEventListener('click', function name(e) {
     const operatorElement = document.getElementById(operatorStorage);
     const issetOperandAndOperatorSet = operatorStorage && localStorage.getItem('a')
 
-
     console.log(c, '????');
 
     // If any of the operator signs are clicked b4 equals, simulate equals
@@ -102,7 +101,6 @@ rightPanel.addEventListener('click', function name(e) {
 
         console.log('HELLO 2');
         console.log(c);
-
 
         // Highlight new operator
         if (operator !== operatorStorage && operatorElement && operatorElement.classList.contains('selected')) {
@@ -116,20 +114,16 @@ rightPanel.addEventListener('click', function name(e) {
             input.value = equals(num);
             localStorage.setItem('operator', operator);
             localStorage.setItem('a', input.value);
-            //console.log('a', localStorage.getItem('a'));
 
         } else {
             // Simulate the equals button
             input.value = equals(num);
             localStorage.setItem('a', input.value);
-            //localStorage.setItem('operator', operator);
-            console.log(input.value, 'enough');
         }
-
         return;
     }
 
-    // make sure all operators are selectable /changeable
+    // make sure all operators are selectable / changeable
     //console.log(isOpertatorEquals)
     if (
         operator == 'subtract' &&
@@ -148,13 +142,11 @@ rightPanel.addEventListener('click', function name(e) {
             operatorElement.classList.toggle('selected');
         }
     } else {
-        console.log('wtf');
-
         if (num == '-' || num == "" || (!Number.isInteger(+num) && !isFloat(num))) {
             input.focus();
             return;
         }
-
+        c++;
         if (operatorElement && operatorElement.classList.contains('selected')) {
             operatorElement.classList.toggle('selected');
             localStorage.removeItem('operator')
@@ -162,6 +154,8 @@ rightPanel.addEventListener('click', function name(e) {
 
         document.getElementById(operator).classList.toggle('selected');
         setOperandAndOperator(num, operator);
+
+        document.querySelector('.fourth-row #number').disabled = false;
     }
 });
 
@@ -182,6 +176,7 @@ leftPanel.addEventListener('click', (e) => {
                 }
                 input.value += target.innerText
                 appendNumbers = true
+                c++;
             } else {
                 input.value += target.innerText;
                 isOpertatorEquals = false;
@@ -191,7 +186,7 @@ leftPanel.addEventListener('click', (e) => {
             if (target.innerText == '.') {
                 target.disabled = true;
             } else {
-                c++;
+                //c++;
             }
 
             break;
@@ -266,7 +261,7 @@ function equals(number) {
     }
 
     // If operators disabled, enable
-
-    console.log(result);
-    return result;
+    console.log(isFloat(result));
+    let cake = isFloat(result) ? Number.parseFloat(result).toFixed(1) : result;
+    return cake;
 }
