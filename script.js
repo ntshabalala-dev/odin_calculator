@@ -1,13 +1,15 @@
 const input = document.querySelector('input');
-input.focus()
+input.focus();
 const rightPanel = document.querySelector('.right-panel');
 const leftPanel = document.querySelector('.left-panel');
 const topPanel = document.querySelector('.top-panel');
-const allRightPanelNodes = document.querySelectorAll('.right-panel button')
+const allRightPanelNodes = document.querySelectorAll('.right-panel button');
 let clearInputOnNumberPress = false;
 let appendNumbers = false;
 let isCalculationDone = false;
 let disableRightPanelBUttons = false;
+let c = 0;
+let isOpertatorEquals = false;
 
 topPanel.addEventListener('click', (e) => {
     const target = e.target;
@@ -15,8 +17,21 @@ topPanel.addEventListener('click', (e) => {
     const operatorElement = document.getElementById(localStorage.getItem('operator'));
     document.querySelector('.fourth-row #number').disabled = false;
 
+    // console.log(localStorage.getItem('operator'));
+
+    // if calculation is done ,the local storage is cleared/ we need the selected operator before clearing.
+    if (isCalculationDone) {
+        const selected = document.querySelector('.selected')
+        if (selected) {
+            selected.classList.toggle('selected');
+        }
+    }
+
     switch (target.id) {
         case 'clear':
+            c = 0;
+            console.log(c);
+
             if (operatorElement) {
                 if (operatorElement.classList.contains('selected')) {
                     operatorElement.classList.toggle('selected');
@@ -30,6 +45,7 @@ topPanel.addEventListener('click', (e) => {
 
             input.focus()
             localStorage.clear();
+            isOpertatorEquals = false;
             // If operators disabled, enable
             break
         case "backspace":
@@ -42,8 +58,8 @@ topPanel.addEventListener('click', (e) => {
                     input.value = inputValue.slice(0, inputValue.length - 1);
                     if (input.value == '') {
                         input.focus()
-                        localStorage.clear();
-
+                        isOpertatorEquals = false;
+                        c = 0;
                         localStorage.clear()
                         document.querySelector('.fourth-row #number').disabled = false;
                         // If operators disabled, enable
@@ -75,13 +91,51 @@ rightPanel.addEventListener('click', function name(e) {
     const operatorStorage = localStorage.getItem('operator');
     const num = input.value;
     const operatorElement = document.getElementById(operatorStorage);
+    const issetOperandAndOperatorSet = operatorStorage && localStorage.getItem('a')
 
-    if (operator == 'subtract' && (
-        localStorage.getItem('operator') == 'subtract' ||
-        (!localStorage.getItem('a') && input.value == '') ||
-        localStorage.getItem('operator') ||
-        (isCalculationDone && localStorage.getItem('a'))
-    )
+
+    console.log(c, '????');
+
+    // If any of the operator signs are clicked b4 equals, simulate equals
+    if (c >= 2 && issetOperandAndOperatorSet) {
+        isOpertatorEquals = true;
+
+        console.log('HELLO 2');
+        console.log(c);
+
+
+        // Highlight new operator
+        if (operator !== operatorStorage && operatorElement && operatorElement.classList.contains('selected')) {
+            operatorElement.classList.toggle('selected');
+            document.getElementById(operator).classList.toggle('selected');
+        }
+
+        if (operator !== operatorStorage) {
+            c = 1;
+            // Set new operator and continue with calculation
+            //localStorage.setItem('a', input.value);
+            localStorage.setItem('operator', operator);
+        } else {
+            // Simulate the equals button
+            input.value = equals(num);
+            localStorage.setItem('a', input.value);
+            //localStorage.setItem('operator', operator);
+            console.log(input.value, 'enough');
+        }
+
+        return;
+    }
+
+    // make sure all operators are selectable /changeable
+    //console.log(isOpertatorEquals)
+    if (
+        operator == 'subtract' &&
+        (
+            localStorage.getItem('operator') == 'subtract' ||
+            (!localStorage.getItem('a') && input.value == '') ||
+            localStorage.getItem('operator') ||
+            (isCalculationDone && localStorage.getItem('a'))
+        )
     ) {
         input.value = '-'
         clearInputOnNumberPress = false;
@@ -91,37 +145,24 @@ rightPanel.addEventListener('click', function name(e) {
             operatorElement.classList.toggle('selected');
         }
     } else {
-        // If any of the operator signs are clicked b4 equals, simulate equals
-        if (operatorStorage && num !== "" && num !== localStorage.getItem('a')) {
-            // Highlight new operator
-            if (operatorElement && operatorElement.classList.contains('selected')) {
-                operatorElement.classList.toggle('selected');
-                document.getElementById(operator).classList.toggle('selected');
-            }
 
-            // Simulate the equals button
-            input.value = equals(num);
+        console.log('wtf');
 
-            // Set new operator and continue with calculation
-            localStorage.setItem('a', input.value);
-            localStorage.setItem('operator', operator);
 
-            // disable operators
-        } else {
-            if (num == "" || (!Number.isInteger(+num) && !isFloat(num))) {
-                return;
-            }
-
-            if (operatorElement && operatorElement.classList.contains('selected')) {
-                operatorElement.classList.toggle('selected');
-                localStorage.removeItem('operator')
-            }
-
-            document.getElementById(operator).classList.toggle('selected');
-            setOperandAndOperator(num, operator);
-            //disableRightPanelBUttons = true;
+        if (num == '-' || num == "" || (!Number.isInteger(+num) && !isFloat(num))) {
+            input.focus();
+            return;
         }
 
+        if (operatorElement && operatorElement.classList.contains('selected')) {
+            operatorElement.classList.toggle('selected');
+            localStorage.removeItem('operator')
+        }
+
+        document.getElementById(operator).classList.toggle('selected');
+        setOperandAndOperator(num, operator);
+        // c = 2;
+        //disableRightPanelBUttons = true;
     }
 });
 
@@ -130,6 +171,7 @@ leftPanel.addEventListener('click', (e) => {
 
     switch (target.id) {
         case 'number':
+
             if (clearInputOnNumberPress) {
                 input.value = '';
                 clearInputOnNumberPress = false
@@ -143,22 +185,31 @@ leftPanel.addEventListener('click', (e) => {
                 appendNumbers = true
             } else {
                 input.value += target.innerText;
-                isCalculationDone = false
+                isOpertatorEquals = false;
+                isCalculationDone = false;
             }
 
             if (target.innerText == '.') {
                 target.disabled = true;
+            } else {
+                c++;
             }
-
-            // const operator = localStorage.getItem('operator');
-            // console.log(operator);
-
 
             break;
         case 'equals':
             input.value = equals(input.value);
             input.focus();
+            if (isCalculationDone) {
+                const selected = document.querySelector('.selected');
+                if (selected && selected.classList.contains('selected')) {
+                    selected.classList.toggle('selected');
+                }
+            }
             localStorage.clear();
+            isOpertatorEquals = false;
+            c = 0;
+            console.log(c);
+
             break
         default:
             break;
@@ -180,6 +231,8 @@ function equals(number) {
     if (number == '' || !localStorage.getItem('a')) {
         return '';
     }
+
+    console.log('HELLO');
     appendNumbers = false;
     clearInputOnNumberPress = true;
     isCalculationDone = true;
@@ -189,11 +242,10 @@ function equals(number) {
     const a = localStorage.getItem('a');
     const operator = localStorage.getItem('operator');
     const b = number;
-
-    let result = null
     const operatorElement2 = document.getElementById(operator);
+    let result = null
 
-    if (operatorElement2.classList.contains('selected')) {
+    if (operatorElement2.classList.contains('selected') && !isOpertatorEquals) {
         operatorElement2.classList.toggle('selected');
     }
 
