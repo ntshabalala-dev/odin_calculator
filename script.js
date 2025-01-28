@@ -113,8 +113,11 @@ rightPanel.addEventListener('click', function name(e) {
         if (operator !== operatorStorage) {
             c = 1;
             // Set new operator and continue with calculation
-            //localStorage.setItem('a', input.value);
+            input.value = equals(num);
             localStorage.setItem('operator', operator);
+            localStorage.setItem('a', input.value);
+            //console.log('a', localStorage.getItem('a'));
+
         } else {
             // Simulate the equals button
             input.value = equals(num);
@@ -145,9 +148,7 @@ rightPanel.addEventListener('click', function name(e) {
             operatorElement.classList.toggle('selected');
         }
     } else {
-
         console.log('wtf');
-
 
         if (num == '-' || num == "" || (!Number.isInteger(+num) && !isFloat(num))) {
             input.focus();
@@ -161,8 +162,6 @@ rightPanel.addEventListener('click', function name(e) {
 
         document.getElementById(operator).classList.toggle('selected');
         setOperandAndOperator(num, operator);
-        // c = 2;
-        //disableRightPanelBUttons = true;
     }
 });
 
@@ -208,7 +207,7 @@ leftPanel.addEventListener('click', (e) => {
             localStorage.clear();
             isOpertatorEquals = false;
             c = 0;
-            console.log(c);
+            //console.log(c);
 
             break
         default:
