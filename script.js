@@ -17,8 +17,6 @@ topPanel.addEventListener('click', (e) => {
     const operatorElement = document.getElementById(localStorage.getItem('operator'));
     document.querySelector('.fourth-row #number').disabled = false;
 
-    // console.log(localStorage.getItem('operator'));
-
     // if calculation is done ,the local storage is cleared/ we need the selected operator before clearing.
     if (isCalculationDone) {
         const selected = document.querySelector('.selected')
@@ -99,9 +97,6 @@ rightPanel.addEventListener('click', function name(e) {
     if (c >= 2 && issetOperandAndOperatorSet) {
         isOpertatorEquals = true;
 
-        console.log('HELLO 2');
-        console.log(c);
-
         // Highlight new operator
         if (operator !== operatorStorage && operatorElement && operatorElement.classList.contains('selected')) {
             operatorElement.classList.toggle('selected');
@@ -177,6 +172,7 @@ leftPanel.addEventListener('click', (e) => {
                 input.value += target.innerText
                 appendNumbers = true
                 c++;
+                console.log(c);
             } else {
                 input.value += target.innerText;
                 isOpertatorEquals = false;
@@ -202,7 +198,6 @@ leftPanel.addEventListener('click', (e) => {
             localStorage.clear();
             isOpertatorEquals = false;
             c = 0;
-            //console.log(c);
 
             break
         default:
@@ -260,8 +255,14 @@ function equals(number) {
             break;
     }
 
+    if (result == 'Infinity') {
+        return 'Complex ∞'
+    } else if (result == 'NaN') {
+        return 'Error'
+    }
+
     // If operators disabled, enable
     console.log(isFloat(result));
-    let cake = isFloat(result) ? Number.parseFloat(result).toFixed(1) : result;
-    return cake;
+    return isFloat(result) ? Number.parseFloat(result).toFixed(1) : result;
+    //return cake;
 }
