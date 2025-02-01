@@ -35,7 +35,6 @@ topPanel.addEventListener('click', (e) => {
     switch (target.id) {
         case 'clear':
             c = 0;
-            console.log(c);
 
             if (operatorElement) {
                 if (operatorElement.classList.contains('selected')) {
@@ -84,9 +83,7 @@ rightPanel.addEventListener('click', function name(e) {
     const operatorElement = document.getElementById(operatorStorage);
     const issetOperandAndOperatorSet = operatorStorage && localStorage.getItem('a')
 
-    console.log(c, '????');
-
-    // If any of the operator signs are clicked b4 equals, simulate equals
+    // make sure all operators are selectable / changeable
     if (c >= 2 && issetOperandAndOperatorSet) {
         isOpertatorEquals = true;
 
@@ -111,8 +108,6 @@ rightPanel.addEventListener('click', function name(e) {
         return;
     }
 
-    // make sure all operators are selectable / changeable
-    //console.log(isOpertatorEquals)
     if (
         operator == 'subtract' &&
         (
@@ -165,7 +160,6 @@ leftPanel.addEventListener('click', (e) => {
                 input.value += target.innerText
                 appendNumbers = true
                 c++;
-                console.log(c);
             } else {
                 input.value += target.innerText;
                 isOpertatorEquals = false;
@@ -225,7 +219,6 @@ function equals(number) {
         return number;
     }
 
-    console.log('HELLO');
     appendNumbers = false;
     clearInputOnNumberPress = true;
     isCalculationDone = true;

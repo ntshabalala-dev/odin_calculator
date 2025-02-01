@@ -1,7 +1,7 @@
 # odin_calculator to do:
 
 1. Create unit tests
-2. Refactor code
+2. Refactor code (Clean code)
 3. Add factorial function
 4. Add percentage fuctionality
 5. Create and add logo to empty space
