@@ -11,6 +11,13 @@ let disableRightPanelBUttons = false;
 let c = 0;
 let isOpertatorEquals = false;
 
+input.addEventListener('keydown', function (e) {
+    // only allow numbers to be typed in with the keyboard
+    if (e.key == ' ' || !Number.isInteger(+e.key)) {
+        e.preventDefault()
+    }
+})
+
 topPanel.addEventListener('click', (e) => {
     const target = e.target;
     let inputValue = input.value;
@@ -69,20 +76,6 @@ topPanel.addEventListener('click', (e) => {
             break;
     }
 })
-
-function setOperandAndOperator(operand, operator) {
-
-    if (!localStorage.getItem('a')) {
-        // Set operator and operand if operand a is not set
-        localStorage.setItem('a', operand);
-        localStorage.setItem('operator', operator);
-    } else {
-        const oldValue = localStorage.getItem('a')
-        localStorage.clear()
-        localStorage.setItem('a', oldValue);
-        localStorage.setItem('operator', operator);
-    }
-}
 
 rightPanel.addEventListener('click', function name(e) {
     const operator = e.target.id
@@ -181,8 +174,6 @@ leftPanel.addEventListener('click', (e) => {
 
             if (target.innerText == '.') {
                 target.disabled = true;
-            } else {
-                //c++;
             }
 
             break;
@@ -205,11 +196,24 @@ leftPanel.addEventListener('click', (e) => {
     }
 })
 
-
 window.addEventListener('unload', function () {
     // Clear local storage when the page is closed or refreshed
     localStorage.clear();
 });
+
+function setOperandAndOperator(operand, operator) {
+
+    if (!localStorage.getItem('a')) {
+        // Set operator and operand if operand a is not set
+        localStorage.setItem('a', operand);
+        localStorage.setItem('operator', operator);
+    } else {
+        const oldValue = localStorage.getItem('a')
+        localStorage.clear()
+        localStorage.setItem('a', oldValue);
+        localStorage.setItem('operator', operator);
+    }
+}
 
 function isFloat(value) {
     const floatVal = parseFloat(value)
@@ -218,7 +222,7 @@ function isFloat(value) {
 
 function equals(number) {
     if (number == '' || !localStorage.getItem('a')) {
-        return '';
+        return number;
     }
 
     console.log('HELLO');
@@ -261,8 +265,5 @@ function equals(number) {
         return 'Error'
     }
 
-    // If operators disabled, enable
-    console.log(isFloat(result));
     return isFloat(result) ? Number.parseFloat(result).toFixed(1) : result;
-    //return cake;
 }
