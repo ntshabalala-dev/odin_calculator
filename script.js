@@ -12,8 +12,10 @@ let c = 0;
 let isOpertatorEquals = false;
 
 input.addEventListener('keydown', function (e) {
+    const hasError = input.value == 'Error' || input.value == 'Complex ∞'
+
     // only allow numbers to be typed in with the keyboard
-    if (e.key == ' ' || !Number.isInteger(+e.key)) {
+    if (e.key == ' ' || !Number.isInteger(+e.key) || hasError) {
         e.preventDefault()
     }
 })
@@ -211,7 +213,7 @@ function setOperandAndOperator(operand, operator) {
 
 function isFloat(value) {
     const floatVal = parseFloat(value)
-    return typeof floatVal === 'number' && !Number.isInteger(floatVal);
+    return typeof floatVal === 'number' && !Number.isInteger(floatVal) && !isNaN(floatVal);
 }
 
 function equals(number) {
